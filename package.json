@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/notblessy/dompetku-backend#readme",
   "dependencies": {
+    "@sentry/node": "^6.10.0",
     "backpack-core": "^0.8.4",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -29,7 +30,9 @@
     "indicative": "^7.4.4",
     "knex": "^0.95.7",
     "mysql": "^2.18.1",
+    "nanoid": "^3.1.23",
     "objection": "^2.2.15",
+    "objection-visibility": "^1.1.0",
     "shortid": "^2.2.16"
   }
 }
