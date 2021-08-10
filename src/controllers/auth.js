@@ -94,3 +94,39 @@ export const login = async (req, res) => {
     });
   }
 };
+
+export const profile = async (req, res) => {
+  try {
+    const user = await User.query().findById(req.user.identity);
+
+    return res.json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      success: false,
+      message: 'Terjadi kesalahan',
+    });
+  }
+};
+
+export const edit = async (req, res) => {
+  try {
+    const user = await User.query().patchAndFetchById(req.user.identity, {
+      name: req.body.name,
+      picture: req.body.picture,
+    });
+    return res.json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      success: false,
+      message: 'Terjadi kesalahan',
+    });
+  }
+};
