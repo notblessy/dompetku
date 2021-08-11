@@ -4,9 +4,6 @@ import Category from '../models/categories';
 import { validateAll } from '../utils/form';
 
 export const all = async (req, res) => {
-  const page = +req.query.page || 1;
-  const pageSize = +req.query.pageSize || 10;
-
   try {
     const category = await Category.query()
       .where((builder) => {
@@ -17,17 +14,11 @@ export const all = async (req, res) => {
         builder.whereNull('deleted_at');
       })
       .orderBy('id', 'DESC')
-      .page(page - 1, pageSize);
+      .withGraphFetched('sub_category');
 
     return res.json({
       success: true,
-      data: category.results,
-      pagination: {
-        page: page,
-        pageSize: pageSize,
-        total: category.total,
-        hasNext: page < Math.floor(category.total / pageSize),
-      },
+      data: category,
     });
   } catch (error) {
     console.error(error);
@@ -42,7 +33,8 @@ export const detail = async (req, res) => {
     const category = await Category.query()
       .findById(req.params.id)
       .whereNull('deleted_at')
-      .first();
+      .first()
+      .withGraphFetched('sub_category');
 
     return res.json({
       success: true,
@@ -74,6 +66,7 @@ export const create = async (req, res) => {
     const category = await Category.query().insert({
       name: req.body.name,
       slug: `${nanoid()}-${paramCase(req.body.name)}`,
+      picture: req.body.picture,
     });
 
     return res.json({
@@ -94,6 +87,7 @@ export const edit = async (req, res) => {
     const category = await Category.query().patchAndFetchById(req.params.id, {
       name: req.body.name,
       slug: `${nanoid()}-${paramCase(req.body.name)}`,
+      picture: req.body.picture,
     });
 
     return res.json({

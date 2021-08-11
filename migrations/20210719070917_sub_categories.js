@@ -6,7 +6,7 @@ exports.up = function (knex) {
     table.foreign('category_id').references('id').inTable('categories');
 
     table.string('name', 255).notNullable().index();
-    table.integer('amount').defaultTo(0);
+    table.text('picture');
 
     table.timestamps(true, true);
     table.datetime('deleted_at');
