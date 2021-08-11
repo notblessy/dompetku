@@ -5,6 +5,7 @@ import config from './config';
 
 import * as auth from './controllers/auth';
 import * as category from './controllers/category';
+import * as currency from './controllers/currency';
 
 const routes = Router();
 
@@ -27,5 +28,11 @@ routes.get('/categories/:id', jwtMiddleware, category.detail);
 routes.post('/categories', jwtMiddleware, category.create);
 routes.put('/categories/:id', jwtMiddleware, category.edit);
 routes.delete('/categories', jwtMiddleware, category.destroy);
+
+routes.get('/currencies', jwtMiddleware, currency.all);
+routes.get('/currencies/:id', jwtMiddleware, currency.detail);
+routes.post('/currencies', jwtMiddleware, currency.create);
+routes.put('/currencies/:id', jwtMiddleware, currency.edit);
+routes.delete('/currencies', jwtMiddleware, currency.destroy);
 
 export default routes;
