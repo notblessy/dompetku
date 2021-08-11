@@ -1,12 +1,7 @@
-import { nanoid } from 'nanoid';
-import { paramCase } from 'change-case';
-import Category from '../models/categories';
+import SubCategory from '../models/sub_categories';
 import { validateAll } from '../utils/form';
 
 export const all = async (req, res) => {
-  const page = +req.query.page || 1;
-  const pageSize = +req.query.pageSize || 10;
-
   try {
     const subCategory = await SubCategory.query()
       .where((builder) => {
@@ -15,20 +10,13 @@ export const all = async (req, res) => {
         }
 
         builder.whereNull('deleted_at');
-        builder.withGraphFetched('category');
       })
       .orderBy('id', 'DESC')
-      .page(page - 1, pageSize);
+      .withGraphFetched('category');
 
     return res.json({
       success: true,
-      data: subCategory.results,
-      pagination: {
-        page: page,
-        pageSize: pageSize,
-        total: category.total,
-        hasNext: page < Math.floor(category.total / pageSize),
-      },
+      data: subCategory,
     });
   } catch (error) {
     console.error(error);
@@ -75,6 +63,7 @@ export const create = async (req, res) => {
   try {
     const subCategory = await SubCategory.query().insert({
       name: req.body.name,
+      picture: req.body.picture,
       category_id: req.body.category_id,
     });
 
@@ -97,6 +86,7 @@ export const edit = async (req, res) => {
       req.params.id,
       {
         name: req.body.name,
+        picture: req.body.picture,
         category_id: req.body.category_id,
       }
     );

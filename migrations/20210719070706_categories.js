@@ -3,6 +3,7 @@ exports.up = function (knex) {
     table.increments('id');
     table.string('name', 255).notNullable().index();
     table.string('slug', 255).index();
+    table.text('picture');
     table.timestamps(true, true);
     table.datetime('deleted_at');
   });

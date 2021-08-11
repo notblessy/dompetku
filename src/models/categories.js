@@ -7,8 +7,8 @@ class Category extends BaseModel {
       relation: BaseModel.HasManyRelation,
       modelClass: require('./sub_categories').default,
       join: {
-        from: 'sub_categories.category_id',
-        to: 'categories.id',
+        from: 'categories.id',
+        to: 'sub_categories.category_id',
       },
     },
   });
