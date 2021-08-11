@@ -1,11 +1,11 @@
 import { BaseModel } from '../database';
-class Category extends BaseModel {
-  static tableName = 'categories';
+class SubCategory extends BaseModel {
+  static tableName = 'sub_categories';
 
   static relationMappings = () => ({
-    sub_category: {
+    category: {
       relation: BaseModel.HasManyRelation,
-      modelClass: require('./sub_categories').default,
+      modelClass: require('./categories').default,
       join: {
         from: 'sub_categories.category_id',
         to: 'categories.id',
@@ -14,4 +14,4 @@ class Category extends BaseModel {
   });
 }
 
-export default Category;
+export default SubCategory;
