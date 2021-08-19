@@ -7,6 +7,8 @@ import * as auth from './controllers/auth';
 import * as category from './controllers/category';
 import * as currency from './controllers/currency';
 import * as subCategory from './controllers/sub_category';
+import * as wallet from './controllers/wallet';
+import * as budget from './controllers/budget';
 
 const routes = Router();
 
@@ -41,5 +43,17 @@ routes.get('/sub_categories/:id', jwtMiddleware, subCategory.detail);
 routes.post('/sub_categories', jwtMiddleware, subCategory.create);
 routes.put('/sub_categories/:id', jwtMiddleware, subCategory.edit);
 routes.delete('/sub_categories', jwtMiddleware, subCategory.destroy);
+
+routes.get('/wallets', jwtMiddleware, wallet.all);
+routes.get('/wallets/:id', jwtMiddleware, wallet.detail);
+routes.post('/wallets', jwtMiddleware, wallet.create);
+routes.put('/wallets/:id', jwtMiddleware, wallet.edit);
+routes.delete('/wallets', jwtMiddleware, wallet.destroy);
+
+routes.get('/budgets', jwtMiddleware, budget.all);
+routes.get('/budgets/:id', jwtMiddleware, budget.detail);
+routes.post('/budgets', jwtMiddleware, budget.create);
+routes.put('/budgets/:id', jwtMiddleware, budget.edit);
+routes.delete('/budgets', jwtMiddleware, budget.destroy);
 
 export default routes;

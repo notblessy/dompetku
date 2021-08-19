@@ -1,13 +1,22 @@
-import Currency from '../models/currencies';
+import Wallet from '../models/wallets';
 import { validateAll } from '../utils/form';
 
 export const all = async (req, res) => {
   try {
-    const currency = await Currency.query();
+    const wallet = await Wallet.query()
+      .where((builder) => {
+        if (req.query.name) {
+          builder.where('name', 'LIKE', `${req.query.name}%`);
+        }
+
+        builder.whereNull('deleted_at');
+      })
+      .orderBy('id', 'DESC')
+      .withGraphFetched('user');
 
     return res.json({
       success: true,
-      data: currency,
+      data: wallet,
     });
   } catch (error) {
     console.error(error);
@@ -19,14 +28,14 @@ export const all = async (req, res) => {
 };
 export const detail = async (req, res) => {
   try {
-    const currency = await Currency.query()
+    const wallet = await Wallet.query()
       .findById(req.params.id)
       .whereNull('deleted_at')
       .first();
 
     return res.json({
       success: true,
-      data: currency,
+      data: wallet,
     });
   } catch (error) {
     console.error(error);
@@ -40,7 +49,7 @@ export const detail = async (req, res) => {
 export const create = async (req, res) => {
   const rules = {
     name: 'required',
-    code: 'required',
+    initial_balance: 'required',
   };
 
   const errors = await validateAll(req.body, rules);
@@ -52,14 +61,16 @@ export const create = async (req, res) => {
   }
 
   try {
-    const currency = await Currency.query().insert({
+    const wallet = await Wallet.query().insert({
       name: req.body.name,
-      code: req.body.code,
+      currency_id: req.body.currency_id,
+      initial_balance: req.body.initial_balance,
+      user_id: req.user.identity,
     });
 
     return res.json({
       success: true,
-      data: currency,
+      data: wallet,
     });
   } catch (error) {
     console.error(error);
@@ -72,14 +83,16 @@ export const create = async (req, res) => {
 
 export const edit = async (req, res) => {
   try {
-    const currency = await Currency.query().patchAndFetchById(req.params.id, {
+    const wallet = await Wallet.query().patchAndFetchById(req.params.id, {
       name: req.body.name,
-      code: req.body.code,
+      currency_id: req.body.currency_id,
+      initial_balance: req.body.initial_balance,
+      user_id: req.user.identity,
     });
 
     return res.json({
       success: true,
-      data: currency,
+      data: wallet,
     });
   } catch (error) {
     console.error(error);
@@ -92,13 +105,13 @@ export const edit = async (req, res) => {
 
 export const destroy = async (req, res) => {
   try {
-    const currency = await Currency.query().whereIn('id', req.body.ids).patch({
+    const wallet = await Wallet.query().whereIn('id', req.body.ids).patch({
       deleted_at: new Date(),
     });
 
     return res.json({
       success: true,
-      data: currency,
+      data: wallet,
     });
   } catch (error) {
     console.error(error);
