@@ -1,5 +1,5 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('budget_wallet', function (table) {
+  return knex.schema.createTable('budget_wallets', function (table) {
     table.bigIncrements('id');
 
     table.bigInteger('budget_id').unsigned();
