@@ -22,6 +22,8 @@ routes.get('/', (_, res) => {
   return res.json({ ping: 'pong!' });
 });
 
+routes.post('/admin/login', auth.loginAdmin);
+
 routes.post('/login', auth.login);
 routes.get('/profile', jwtMiddleware, auth.profile);
 routes.put('/profile', jwtMiddleware, auth.edit);

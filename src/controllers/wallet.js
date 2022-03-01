@@ -65,7 +65,7 @@ export const create = async (req, res) => {
       name: req.body.name,
       currency_id: req.body.currency_id,
       initial_balance: req.body.initial_balance,
-      user_id: req.user.identity,
+      user_id: req.user.id,
     });
 
     return res.json({
@@ -87,7 +87,7 @@ export const edit = async (req, res) => {
       name: req.body.name,
       currency_id: req.body.currency_id,
       initial_balance: req.body.initial_balance,
-      user_id: req.user.identity,
+      user_id: req.user.id,
     });
 
     return res.json({

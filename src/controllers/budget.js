@@ -69,7 +69,7 @@ export const create = async (req, res) => {
   try {
     const budget = await Budget.query(trx).insert({
       name: req.body.name,
-      user_id: req.user.identity,
+      user_id: req.user.id,
       currency_id: req.body.currency_id,
       amount: req.body.amount,
       recurrence: req.body.recurrence,
@@ -113,7 +113,7 @@ export const edit = async (req, res) => {
   try {
     const budget = await Budget.query(trx).patchAndFetchById(req.params.id, {
       name: req.body.name,
-      user_id: req.user.identity,
+      user_id: req.user.id,
       currency_id: req.body.currency_id,
       amount: req.body.amount,
       recurrence: req.body.recurrence,
