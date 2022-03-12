@@ -4,6 +4,7 @@ exports.up = function (knex) {
 
     table.string('email', 150).index();
     table.string('name', 150);
+    table.string('password', 150);
     table.text('picture');
     table
       .enu('role', ['ADMIN', 'USER'], { enumName: 'role' })

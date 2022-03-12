@@ -5,8 +5,8 @@ exports.up = function (knex) {
     table.bigInteger('wallet_id').unsigned();
     table.foreign('wallet_id').references('id').inTable('wallets');
 
-    table.bigInteger('sub_category_id').unsigned();
-    table.foreign('sub_category_id').references('id').inTable('sub_categories');
+    table.bigInteger('category_id').unsigned();
+    table.foreign('category_id').references('id').inTable('categories');
 
     table.integer('amount').defaultTo(0);
     table.datetime('date');

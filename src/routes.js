@@ -4,6 +4,7 @@ import expressJWT from 'express-jwt';
 import config from './config';
 
 import * as auth from './controllers/auth';
+import * as user from './controllers/user';
 import * as category from './controllers/category';
 import * as currency from './controllers/currency';
 import * as subCategory from './controllers/sub_category';
@@ -15,7 +16,7 @@ const routes = Router();
 const jwtMiddleware = expressJWT({
   secret: config.JWT_SECRET,
   algorithms: [config.JWT_ALGORITHM],
-  issuer: 'api.dompetku.id',
+  issuer: config.JWT_ISSUER,
 });
 
 routes.get('/', (_, res) => {
@@ -27,6 +28,9 @@ routes.post('/admin/login', auth.loginAdmin);
 routes.post('/login', auth.login);
 routes.get('/profile', jwtMiddleware, auth.profile);
 routes.put('/profile', jwtMiddleware, auth.edit);
+
+routes.post('/users/add', auth.addUser);
+routes.get('/users', jwtMiddleware, user.all);
 
 routes.get('/categories', jwtMiddleware, category.all);
 routes.get('/categories/:id', jwtMiddleware, category.detail);

@@ -5,8 +5,8 @@ exports.up = function (knex) {
     table.bigInteger('budget_id').unsigned();
     table.foreign('budget_id').references('id').inTable('budgets');
 
-    table.bigInteger('sub_category_id').unsigned();
-    table.foreign('sub_category_id').references('id').inTable('sub_categories');
+    table.bigInteger('category_id').unsigned();
+    table.foreign('category_id').references('id').inTable('categories');
 
     table.timestamps(true, true);
     table.datetime('deleted_at');

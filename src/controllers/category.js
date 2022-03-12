@@ -13,8 +13,7 @@ export const all = async (req, res) => {
 
         builder.whereNull('deleted_at');
       })
-      .orderBy('id', 'DESC')
-      .withGraphFetched('sub_category');
+      .orderBy('id', 'DESC');
 
     return res.json({
       success: true,
@@ -33,8 +32,7 @@ export const detail = async (req, res) => {
     const category = await Category.query()
       .findById(req.params.id)
       .whereNull('deleted_at')
-      .first()
-      .withGraphFetched('sub_category');
+      .first();
 
     return res.json({
       success: true,
@@ -65,8 +63,9 @@ export const create = async (req, res) => {
   try {
     const category = await Category.query().insert({
       name: req.body.name,
+      user_id: req.body.user_id,
       slug: `${nanoid()}-${paramCase(req.body.name)}`,
-      picture: req.body.picture,
+      picture: req.body.icon,
     });
 
     return res.json({

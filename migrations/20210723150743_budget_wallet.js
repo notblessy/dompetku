@@ -14,5 +14,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists('budget_wallet');
+  return knex.schema.dropTableIfExists('budget_wallets');
 };
