@@ -35,6 +35,7 @@ routes.get('/users', jwtMiddleware, user.all);
 routes.get('/categories', jwtMiddleware, category.all);
 routes.get('/categories/:id', jwtMiddleware, category.detail);
 routes.post('/categories', jwtMiddleware, category.create);
+routes.post('/categories/bulk', jwtMiddleware, category.bulkCreate);
 routes.put('/categories/:id', jwtMiddleware, category.edit);
 routes.delete('/categories', jwtMiddleware, category.destroy);
 

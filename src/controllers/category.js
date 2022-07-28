@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid';
 import { paramCase } from 'change-case';
 import Category from '../models/categories';
 import { validateAll } from '../utils/form';
+import { categories } from '../predefined/category.json';
 
 export const all = async (req, res) => {
   try {
@@ -64,6 +65,7 @@ export const create = async (req, res) => {
     const category = await Category.query().insert({
       name: req.body.name,
       user_id: req.body.user_id,
+      type: req.body.type,
       slug: `${nanoid()}-${paramCase(req.body.name)}`,
       picture: req.body.icon,
     });
@@ -71,6 +73,37 @@ export const create = async (req, res) => {
     return res.json({
       success: true,
       data: category,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      success: false,
+      message: 'Gagal memasukkan data!',
+    });
+  }
+};
+
+export const bulkCreate = async (req, res) => {
+  try {
+    if (categories.length > 0) {
+      const bulkInsert = categories.map((cat) => {
+        return Category.query().insert({
+          name: cat.name,
+          type: cat.type,
+          user_id: req.user.id,
+          slug: `${nanoid()}-${paramCase(cat.name)}`,
+          picture: cat.icon,
+        });
+      });
+      const cats = await Promise.all(bulkInsert);
+      return res.json({
+        success: true,
+        data: cats,
+      });
+    }
+    return res.json({
+      success: true,
+      data: null,
     });
   } catch (error) {
     console.error(error);

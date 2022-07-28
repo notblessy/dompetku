@@ -1,5 +1,48 @@
-[
-  {
-    "name": ""
-  }
-]
+{
+  "categories": [
+    {
+      "name": "Home",
+      "type": "EXPENSE"
+    },
+    {
+      "name": "Food",
+      "type": "EXPENSE"
+    },
+    {
+      "name": "Health",
+      "type": "EXPENSE"
+    },
+    {
+      "name": "Beauty",
+      "type": "EXPENSE"
+    },
+    {
+      "name": "Entertainment",
+      "type": "EXPENSE"
+    },
+    {
+      "name": "Transportation",
+      "type": "EXPENSE"
+    },
+    {
+      "name": "Bills",
+      "type": "EXPENSE"
+    },
+    {
+      "name": "Other",
+      "type": "EXPENSE"
+    },
+    {
+      "name": "Salary",
+      "type": "INCOME"
+    },
+    {
+      "name": "Payment",
+      "type": "INCOME"
+    },
+    {
+      "name": "Other",
+      "type": "INCOME"
+    }
+  ]
+}
