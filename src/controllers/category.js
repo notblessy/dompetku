@@ -118,6 +118,7 @@ export const edit = async (req, res) => {
   try {
     const category = await Category.query().patchAndFetchById(req.params.id, {
       name: req.body.name,
+      type: cat.type,
       slug: `${nanoid()}-${paramCase(req.body.name)}`,
       picture: req.body.picture,
     });

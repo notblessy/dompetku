@@ -1,5 +1,5 @@
 import Budget from '../models/budgets';
-import BudgetSubCategory from '../models/budget_sub_categories';
+import BudgetSubCategory from '../models/budget_categories';
 import BudgetWallet from '../models/budget_wallets';
 import { validateAll } from '../utils/form';
 import { conn } from '../database';
@@ -53,7 +53,7 @@ export const detail = async (req, res) => {
 export const create = async (req, res) => {
   const rules = {
     name: 'required',
-    sub_category_ids: 'required',
+    category_ids: 'required',
     wallet_ids: 'required',
     amount: 'required',
   };
@@ -75,11 +75,11 @@ export const create = async (req, res) => {
       recurrence: req.body.recurrence,
     });
 
-    const subCategoryIds = req.body.sub_category_ids;
-    const budgetSubCat = subCategoryIds.map((sub_category_ids) => {
+    const subCategoryIds = req.body.category_ids;
+    const budgetSubCat = subCategoryIds.map((catId) => {
       return BudgetSubCategory.query(trx).insert({
         budget_id: budget.id,
-        sub_category_id: sub_category_ids,
+        category_id: catId,
       });
     });
     await Promise.all(budgetSubCat);

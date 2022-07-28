@@ -7,7 +7,6 @@ import * as auth from './controllers/auth';
 import * as user from './controllers/user';
 import * as category from './controllers/category';
 import * as currency from './controllers/currency';
-import * as subCategory from './controllers/sub_category';
 import * as wallet from './controllers/wallet';
 import * as budget from './controllers/budget';
 
@@ -44,12 +43,6 @@ routes.get('/currencies/:id', jwtMiddleware, currency.detail);
 routes.post('/currencies', jwtMiddleware, currency.create);
 routes.put('/currencies/:id', jwtMiddleware, currency.edit);
 routes.delete('/currencies', jwtMiddleware, currency.destroy);
-
-routes.get('/sub_categories', jwtMiddleware, subCategory.all);
-routes.get('/sub_categories/:id', jwtMiddleware, subCategory.detail);
-routes.post('/sub_categories', jwtMiddleware, subCategory.create);
-routes.put('/sub_categories/:id', jwtMiddleware, subCategory.edit);
-routes.delete('/sub_categories', jwtMiddleware, subCategory.destroy);
 
 routes.get('/wallets', jwtMiddleware, wallet.all);
 routes.get('/wallets/:id', jwtMiddleware, wallet.detail);

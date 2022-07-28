@@ -21,10 +21,10 @@ class Budget extends BaseModel {
     },
     budget_sub_category: {
       relation: BaseModel.HasManyRelation,
-      modelClass: require('./budget_sub_categories').default,
+      modelClass: require('./budget_categories').default,
       join: {
         from: 'budgets.id',
-        to: 'budget_sub_category.budget_id',
+        to: 'budget_category.budget_id',
       },
     },
   });

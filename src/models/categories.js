@@ -5,10 +5,10 @@ class Category extends BaseModel {
   static relationMappings = () => ({
     sub_category: {
       relation: BaseModel.HasManyRelation,
-      modelClass: require('./sub_categories').default,
+      modelClass: require('./budget_categories').default,
       join: {
         from: 'categories.id',
-        to: 'sub_categories.category_id',
+        to: 'budget_categories.category_id',
       },
     },
   });
