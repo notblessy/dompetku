@@ -70,6 +70,7 @@ export const register = async (req, res) => {
     return res.json({
       type: 'Bearer',
       token: token,
+      success: true,
       data: data,
     });
   } catch (error) {
@@ -142,8 +143,8 @@ export const addUser = async (req, res) => {
 
 export const login = async (req, res) => {
   const rules = {
-    id_token: 'required',
-    role: 'in:USER,ADMIN',
+    email: 'required',
+    password: 'required',
   };
 
   const errors = await validateAll(req.body, rules);
@@ -155,13 +156,34 @@ export const login = async (req, res) => {
   }
 
   try {
-    const client = new OAuth2Client(config.GOOGLE_CLIENT_ID);
-    const ticket = await client.verifyIdToken({
-      idToken: req.body.id_token,
-      audience: config.GOOGLE_CLIENT_ID,
+    const existing = await User.query().findOne({
+      email: req.body.email,
     });
 
-    const googlePayload = ticket.getPayload();
+    if (!existing) {
+      return res.json({
+        success: false,
+        message: 'Email not found!',
+      });
+    }
+
+    const isMatch = await bcrypt.compare(req.body.password, existing.password);
+
+    if (!isMatch) {
+      return res.json({
+        success: false,
+        message: 'Password did not match',
+      });
+    }
+
+    const payload = {
+      id: existing.id,
+      user_claims: {
+        id: existing.id,
+        email: existing.email,
+        role: existing.role,
+      },
+    };
 
     const jwtOptions = {
       issuer: config.JWT_ISSUER,
@@ -169,56 +191,13 @@ export const login = async (req, res) => {
       algorithm: config.JWT_ALGORITHM,
     };
 
-    const data = await User.query().where('email', googlePayload.email).first();
-    if (!data) {
-      const newUser = await User.query().insert({
-        email: googlePayload.email,
-        name: googlePayload.name,
-        picture: googlePayload.picture,
-        role: req.body.role,
-        id: nanoid(),
-      });
-
-      if (!newUser) {
-        return res.json({
-          success: false,
-          message: 'Registration failed!',
-        });
-      }
-
-      const payload = {
-        id: newUser.id,
-        user_claims: {
-          id: newUser.id,
-          email: googlePayload.email,
-          role: newUser.role,
-        },
-      };
-
-      const token = jwt.sign(payload, config.JWT_SECRET, jwtOptions);
-
-      return res.json({
-        type: 'Bearer',
-        token: token,
-        data: newUser,
-      });
-    }
-
-    const payload = {
-      id: data.id,
-      user_claims: {
-        id: data.id,
-        email: data.email,
-        role: data.role,
-      },
-    };
-
     const token = jwt.sign(payload, config.JWT_SECRET, jwtOptions);
 
     return res.json({
       type: 'Bearer',
       token: token,
-      data: data,
+      success: true,
+      data: existing,
     });
   } catch (error) {
     console.error(error);
