@@ -1,5 +1,5 @@
 import { BaseModel } from '../database';
-class BudgetSubCategory extends BaseModel {
+class BudgetCategory extends BaseModel {
   static tableName = 'budget_categories';
 
   static relationMappings = () => ({
@@ -11,15 +11,15 @@ class BudgetSubCategory extends BaseModel {
         to: 'budgets.id',
       },
     },
-    sub_category: {
+    category: {
       relation: BaseModel.BelongsToOneRelation,
       modelClass: require('./categories').default,
       join: {
-        from: 'budget_categories.sub_category_id',
-        to: 'sub_categories.id',
+        from: 'budget_categories.category_id',
+        to: 'categories.id',
       },
     },
   });
 }
 
-export default BudgetSubCategory;
+export default BudgetCategory;

@@ -8,6 +8,9 @@ exports.up = function (knex) {
     table.bigInteger('category_id').unsigned();
     table.foreign('category_id').references('id').inTable('categories');
 
+    table.bigInteger('budget_id').unsigned();
+    table.foreign('budget_id').references('id').inTable('budgets');
+
     table.integer('amount').defaultTo(0);
     table.datetime('date');
 

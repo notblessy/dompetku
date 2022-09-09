@@ -19,12 +19,20 @@ class Wallet extends BaseModel {
         to: 'currencies.id',
       },
     },
-    budget_wallet: {
+    budget_wallets: {
       relation: BaseModel.HasManyRelation,
       modelClass: require('./budget_wallets').default,
       join: {
         from: 'wallets.id',
         to: 'budget_wallets.wallet_id',
+      },
+    },
+    transactions: {
+      relation: BaseModel.HasManyRelation,
+      modelClass: require('./transactions').default,
+      join: {
+        from: 'wallets.id',
+        to: 'transactions.wallet_id',
       },
     },
   });
