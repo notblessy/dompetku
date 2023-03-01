@@ -2,35 +2,35 @@
   "categories": [
     {
       "name": "Home",
-      "type": "EXPENSE"
+      "type": "EXPENSES"
     },
     {
       "name": "Food",
-      "type": "EXPENSE"
+      "type": "EXPENSES"
     },
     {
       "name": "Health",
-      "type": "EXPENSE"
+      "type": "EXPENSES"
     },
     {
       "name": "Beauty",
-      "type": "EXPENSE"
+      "type": "EXPENSES"
     },
     {
       "name": "Entertainment",
-      "type": "EXPENSE"
+      "type": "EXPENSES"
     },
     {
       "name": "Transportation",
-      "type": "EXPENSE"
+      "type": "EXPENSES"
     },
     {
       "name": "Bills",
-      "type": "EXPENSE"
+      "type": "EXPENSES"
     },
     {
       "name": "Other",
-      "type": "EXPENSE"
+      "type": "EXPENSES"
     },
     {
       "name": "Salary",
