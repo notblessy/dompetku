@@ -1,38 +1,46 @@
-import { nanoid } from 'nanoid';
-import { paramCase } from 'change-case';
-import Category from '../models/categories';
-import { validateAll } from '../utils/form';
-import { categories } from '../predefined/category.json';
+import { nanoid } from "nanoid";
+import { paramCase } from "change-case";
+import Category from "../models/categories";
+import { validateAll } from "../utils/form";
+import { categories } from "../predefined/category.json";
 
 export const all = async (req, res) => {
   try {
-    const category = await Category.query()
+    const categories = await Category.query()
       .where((builder) => {
         if (req.query.name) {
-          builder.where('name', 'LIKE', `${req.query.name}%`);
+          builder.where("name", "LIKE", `${req.query.name}%`);
         }
 
-        builder.whereNull('deleted_at');
+        builder.whereNull("deleted_at");
       })
-      .orderBy('id', 'DESC');
+      .orderBy("id", "DESC")
+      .page(+req.query.page, +req.query.limit);
 
     return res.json({
       success: true,
-      data: category,
+      data: {
+        records: categories,
+        pagination: {
+          page: req.query.page,
+          total: categories.total,
+        },
+      },
     });
   } catch (error) {
     console.error(error);
     return res.json({
       success: false,
-      message: 'Terjadi kesalahan',
+      message: "Terjadi kesalahan",
     });
   }
 };
+
 export const detail = async (req, res) => {
   try {
     const category = await Category.query()
       .findById(req.params.id)
-      .whereNull('deleted_at')
+      .whereNull("deleted_at")
       .first();
 
     return res.json({
@@ -43,14 +51,14 @@ export const detail = async (req, res) => {
     console.error(error);
     return res.json({
       success: false,
-      message: 'Terjadi kesalahan',
+      message: "Terjadi kesalahan",
     });
   }
 };
 
 export const create = async (req, res) => {
   const rules = {
-    name: 'required',
+    name: "required",
   };
 
   const errors = await validateAll(req.body, rules);
@@ -78,7 +86,7 @@ export const create = async (req, res) => {
     console.error(error);
     return res.json({
       success: false,
-      message: 'Gagal memasukkan data!',
+      message: "Gagal memasukkan data!",
     });
   }
 };
@@ -109,7 +117,7 @@ export const bulkCreate = async (req, res) => {
     console.error(error);
     return res.json({
       success: false,
-      message: 'Gagal memasukkan data!',
+      message: "Gagal memasukkan data!",
     });
   }
 };
@@ -131,14 +139,14 @@ export const edit = async (req, res) => {
     console.error(error);
     return res.json({
       success: false,
-      message: 'Gagal memasukkan data!',
+      message: "Gagal memasukkan data!",
     });
   }
 };
 
 export const destroy = async (req, res) => {
   try {
-    const category = await Category.query().whereIn('id', req.body.ids).patch({
+    const category = await Category.query().whereIn("id", req.body.ids).patch({
       deleted_at: new Date(),
     });
 
@@ -150,7 +158,7 @@ export const destroy = async (req, res) => {
     console.error(error);
     return res.json({
       success: false,
-      message: 'Gagal menghapus!',
+      message: "Gagal menghapus!",
     });
   }
 };
