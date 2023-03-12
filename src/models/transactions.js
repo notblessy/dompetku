@@ -1,38 +1,38 @@
-import { BaseModel } from '../database';
+import { BaseModel } from "../database";
 class Transaction extends BaseModel {
-  static tableName = 'transactions';
+  static tableName = "transactions";
 
   static relationMappings = () => ({
     user: {
       relation: BaseModel.BelongsToOneRelation,
-      modelClass: require('./users').default,
+      modelClass: require("./users").default,
       join: {
-        from: 'transactions.user_id',
-        to: 'users.id',
-      },
-    },
-    currency: {
-      relation: BaseModel.BelongsToOneRelation,
-      modelClass: require('./currencies').default,
-      join: {
-        from: 'transactions.currency_id',
-        to: 'currencies.id',
+        from: "transactions.user_id",
+        to: "users.id",
       },
     },
     category: {
       relation: BaseModel.BelongsToOneRelation,
-      modelClass: require('./categories').default,
+      modelClass: require("./categories").default,
       join: {
-        from: 'transactions.category_id',
-        to: 'categories.id',
+        from: "transactions.category_id",
+        to: "categories.id",
       },
     },
     wallet: {
       relation: BaseModel.BelongsToOneRelation,
-      modelClass: require('./wallets').default,
+      modelClass: require("./wallets").default,
       join: {
-        from: 'transactions.wallet_id',
-        to: 'wallets.id',
+        from: "transactions.wallet_id",
+        to: "wallets.id",
+      },
+    },
+    budget: {
+      relation: BaseModel.BelongsToOneRelation,
+      modelClass: require("./budgets").default,
+      join: {
+        from: "transactions.budget_id",
+        to: "budgets.id",
       },
     },
   });

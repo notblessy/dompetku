@@ -1,9 +1,9 @@
-import Budget from '../models/budgets';
-import BudgetCategory from '../models/budget_categories';
-import BudgetWallet from '../models/budget_wallets';
-import Transaction from '../models/transactions';
-import { validateAll } from '../utils/form';
-import { conn } from '../database';
+import Budget from "../models/budgets";
+import BudgetCategory from "../models/budget_categories";
+import BudgetWallet from "../models/budget_wallets";
+import Transaction from "../models/transactions";
+import { validateAll } from "../utils/form";
+import { conn } from "../database";
 
 export const all = async (req, res) => {
   try {
@@ -23,7 +23,7 @@ export const all = async (req, res) => {
       GROUP BY b.id
     `);
 
-    const budgetData = budgets.length > 0 ? budgets[0] : 0;
+    const budgetData = budgets.length > 0 ? budgets[0] : [];
     const results = budgetData.map((d) => {
       const progress = (d.total_transaction / d.amount) * 100;
       return {
@@ -44,7 +44,7 @@ export const all = async (req, res) => {
     console.error(error);
     return res.json({
       success: false,
-      message: 'Terjadi kesalahan',
+      message: "Terjadi kesalahan",
     });
   }
 };
@@ -52,9 +52,9 @@ export const detail = async (req, res) => {
   try {
     const budget = await Budget.query()
       .findById(req.params.id)
-      .whereNull('deleted_at')
+      .whereNull("deleted_at")
       .first()
-      .withGraphFetched('category');
+      .withGraphFetched("category");
 
     return res.json({
       success: true,
@@ -64,17 +64,17 @@ export const detail = async (req, res) => {
     console.error(error);
     return res.json({
       success: false,
-      message: 'Terjadi kesalahan',
+      message: "Terjadi kesalahan",
     });
   }
 };
 
 export const create = async (req, res) => {
   const rules = {
-    name: 'required',
-    category_ids: 'required',
-    wallet_ids: 'required',
-    amount: 'required',
+    name: "required",
+    category_ids: "required",
+    wallet_ids: "required",
+    amount: "required",
   };
 
   const errors = await validateAll(req.body, rules);
@@ -89,7 +89,6 @@ export const create = async (req, res) => {
     const budget = await Budget.query(trx).insert({
       name: req.body.name,
       user_id: req.user.id,
-      currency_id: req.body.currency_id,
       amount: req.body.amount,
       recurrence: req.body.recurrence,
     });
@@ -122,7 +121,7 @@ export const create = async (req, res) => {
     await trx.rollback();
     return res.json({
       success: false,
-      message: 'Gagal memasukkan data!',
+      message: "Gagal memasukkan data!",
     });
   }
 };
@@ -145,7 +144,7 @@ export const edit = async (req, res) => {
           budget_id: req.params.id,
           sub_category_id: sub_category_ids,
         })
-        .where('budget_id', req.params.id);
+        .where("budget_id", req.params.id);
     });
     await Promise.all(budgetCat);
 
@@ -156,7 +155,7 @@ export const edit = async (req, res) => {
           budget_id: req.params.id,
           wallet_id: wallet_ids,
         })
-        .where('budget_id', req.params.id);
+        .where("budget_id", req.params.id);
     });
     await Promise.all(budgetWallet);
 
@@ -170,14 +169,14 @@ export const edit = async (req, res) => {
     await trx.rollback();
     return res.json({
       success: false,
-      message: 'Gagal memasukkan data!',
+      message: "Gagal memasukkan data!",
     });
   }
 };
 
 export const destroy = async (req, res) => {
   try {
-    const budget = await Budget.query().whereIn('id', req.body.ids).patch({
+    const budget = await Budget.query().whereIn("id", req.body.ids).patch({
       deleted_at: new Date(),
     });
 
@@ -189,7 +188,7 @@ export const destroy = async (req, res) => {
     console.error(error);
     return res.json({
       success: false,
-      message: 'Gagal menghapus!',
+      message: "Gagal menghapus!",
     });
   }
 };
