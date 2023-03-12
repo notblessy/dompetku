@@ -64,7 +64,7 @@ export const create = async (req, res) => {
       category_id: req.body.category_id,
       budget_id: req.body.budget_id,
       amount: req.body.amount,
-      spent_at: new Date(req.body.amount),
+      spent_at: new Date(req.body.spent_at),
     });
 
     return res.json({
