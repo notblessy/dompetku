@@ -3,7 +3,9 @@ import Transaction from "../models/transactions";
 
 export const all = async (req, res) => {
   try {
-    const offset = (+req.query.page - 1) * +req.query.limit;
+    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const offset = (page - 1) * limit;
 
     const transactions = await Transaction.query()
       .where((builder) => {
@@ -22,16 +24,18 @@ export const all = async (req, res) => {
       .withGraphJoined("budget", { joinOperation: "leftJoin" })
       .withGraphJoined("user", { joinOperation: "leftJoin" })
       .orderBy("spent_at", "DESC")
-      .page(+req.query.page, +req.query.limit);
+      .page(offset, limit);
+
+    console.log(offset, page);
 
     return res.json({
       success: true,
       data: {
         records: transactions.results,
         pagination: {
-          page: +req.query.page,
+          page: page,
           total: transactions.total,
-          has_next: offset + +req.query.page < transactions.total,
+          has_next: offset + limit < transactions.total,
         },
       },
     });
