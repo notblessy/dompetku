@@ -14,18 +14,11 @@ export const all = async (req, res) => {
 
         builder.whereNull("deleted_at");
       })
-      .orderBy("id", "DESC")
-      .page(+req.query.page, +req.query.limit);
+      .orderBy("id", "DESC");
 
     return res.json({
       success: true,
-      data: {
-        records: categories,
-        pagination: {
-          page: req.query.page,
-          total: categories.total,
-        },
-      },
+      data: categories,
     });
   } catch (error) {
     console.error(error);
