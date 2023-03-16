@@ -17,6 +17,10 @@ export const all = async (req, res) => {
           builder.where("wallet_id", req.query.wallet_id);
         }
 
+        if (req.query.type) {
+          builder.where("category.type", req.query.type);
+        }
+
         builder.whereNull("transactions.deleted_at");
       })
       .withGraphJoined("wallet", { joinOperation: "leftJoin" })
@@ -25,8 +29,6 @@ export const all = async (req, res) => {
       .withGraphJoined("user", { joinOperation: "leftJoin" })
       .orderBy("spent_at", "DESC")
       .page(offset, limit);
-
-    console.log(offset, page);
 
     return res.json({
       success: true,
